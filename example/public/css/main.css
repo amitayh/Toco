@@ -1,0 +1,7 @@
+body, input, textarea, select {
+    font-family: verdana, arial;
+}
+
+a:link, a:visited, a:active, a:hover {
+    color: #00639c;
+}

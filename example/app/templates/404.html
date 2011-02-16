@@ -1,0 +1,11 @@
+{% extends "layout/base.html" %}
+
+{% block content %}
+    <h2>404 - Page Not Found</h2>
+    {% if DEBUG and exception %}
+        <p><strong>Message:</strong> {{ exception.getMessage }}</p>
+        <p><strong>Thrown in:</strong> {{ exception.getFile }}, line {{ exception.getLine }}</p>
+        <p><strong>Stack trace:</strong></p>
+        <pre>{{ exception.getTraceAsString }}</pre>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,3 @@
+<?php
+
+$toco->route('^$', 'index');

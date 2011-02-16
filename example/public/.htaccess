@@ -1,0 +1,11 @@
+RewriteEngine On
+RewriteBase /~amitay/toco/example/public/
+
+# Add trailing slash
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*)$ $1/ [L,R=301]
+
+# Route every request to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php/$1 [QSA]
