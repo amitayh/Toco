@@ -30,9 +30,6 @@ class Toco_Route
 
     public function match($url) {
         $url = trim($url, '/');
-        if ($url !== '') {
-            $url = '/' . $url;
-        }
         if (preg_match($this->compile(), $url, $matches)) {
             return $this->_clean(array_merge($this->defaults, $matches));
         }
