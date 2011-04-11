@@ -54,32 +54,30 @@ class Toco
     }
 
     /**
-     * Add a route to check
+     * Define a route
      *
-     * @param string $pattern
-     * @param mixed $match
-     * @param array $params
+     * @param Toco_Route $route
+     * @param callable $view
      * @return Toco
      */
-    public function route($pattern, $match, $params = array()) {
-        $this->_routes[] = array($pattern, $match, $params);
+    public function route(Toco_Route $route, $view) {
+        $this->_routes[] = array($route, $view);
         return $this;
     }
-    
+
     /**
      * Dispatch request
-     * 
+     *
      * @throws Toco_Exception
      * @return void
      */
     public function run() {
         $request = new Toco_Request();
         $this->_runMiddleware('processRequest', $request);
-        $response = null;
         try {
-            $match = $this->match($request->path, $this->_routes);
+            $match = $this->match($request->path);
             if ($match === false) {
-                throw new Toco_Exception_404("No route matches requested path: $request->path");
+                throw new Toco_Exception_404('No route matches requested path: ' . $request->path);
             }
             list($view, $params) = $match;
             $this->_runMiddleware('processView', $request, $view, $params);
@@ -104,33 +102,14 @@ class Toco
 
     /**
      * Match path to routes
-     * 
+     *
      * @param string $path
-     * @param array $routes
-     * @param array $params
-     * @return false|array
      */
-    public function match($path, $routes, $params = array()) {
-        foreach ($routes as $route) {
-            if (!is_array($route) || !isset($route[1])) {
-                throw new Toco_Exception('Invalid route: ' . print_r($route, true));
-            }
-            $pattern = str_replace('/', '\/', $route[0]);
-            if (preg_match("/$pattern/", $path, $matches)) {
-                /*
-                 * Merge all parameters (those that were passed to the method,
-                 * from the route and from captured regex matches)
-                 */
-                if (isset($route[2])) {
-                    $params = array_merge($params, $route[2]);
-                }
-                $params = array_merge($params, $matches);
-                if (is_array($route[1])) {
-                    // Recursive match
-                    $path = preg_replace("/($pattern)/", '', $path);
-                    return $this->match($path, $route[1], $params);
-                }
-                return array($route[1], $params);
+    public function match($path) {
+        foreach ($this->_routes as $route) {
+            list($route, $view) = $route;
+            if (($params = $route->match($path)) !== false) {
+                return array($view, $params);
             }
         }
         return false;

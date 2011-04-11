@@ -85,7 +85,7 @@ class Toco_Request
         
         $this->method = $this->SERVER['REQUEST_METHOD'];
         if (isset($this->SERVER['PATH_INFO'])) {
-            $this->path = ltrim($this->SERVER['PATH_INFO'], '/');
+            $this->path = '/' . trim($this->SERVER['PATH_INFO'], '/');
         }
         $this->headers = $this->_getHeaders(); 
     }
