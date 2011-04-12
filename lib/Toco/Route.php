@@ -95,7 +95,7 @@ class Toco_Route
     }
 
     /**
-     * Clean the parameters array - remove elements with numeric keys and empty values
+     * Clean the parameters array - remove elements with numeric keys or empty values
      *
      * @param array $params
      * @return array
