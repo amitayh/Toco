@@ -34,7 +34,7 @@ subclass). Let's see how this works:
     $toco = new Toco::getInstance();
 
     // Define URLs
-    $toco->route('^$', 'index');
+    $toco->route(new Toco_Route('/'), 'index');
 
     // Define view function
     function index(Toco_Request $request) {
@@ -46,47 +46,25 @@ subclass). Let's see how this works:
 
 ### URLs ###
 
-You will need to define your app's URLs by mapping them to regular expression patterns.
+You will need to define your app's URLs by mapping them to patterns.
 The URL patterns will be mapped to a view function that will be responsible for the business logic
 (if needed) and returning a response object.
 
 You can capture patterns inside your URLs that will be passed to your view functions.
 For example, let's say you have a blog. You want your article URL to look like this:
 
-http://www.mysite.com/blog/view/123/
+http://www.mysite.com/blog/2011/03/my-blog-entry/
 
 To map this URL you will do something like this:
 
-    $toco->route('^blog/view/(?P<id>\d+)/$', 'blog-view');
+    $toco->route(new Toco_Route('/blog/:year/:month/:slug'), 'blog-view');
 
-Then, you can get the captured ID in your view function, like so:
+Then, you can get the captured patterns in your view function, like so:
 
     function blog-view(Toco_Request $request, $matches) {
-        // Captured ID is now $matches['id']
+        // Captured slug is now $matches['slug']
         ...
     }
-
-If you have several URLs that are related, it would be wise to use a recursive match. For example,
-in your blog you have 3 URLs:
-
-1. Blog index page - http://www.mysite.com/blog/
-2. Blog category page - http://www.mysite.com/blog/category/123/
-3. Blog article page - http://www.mysite.com/blog/view/123/
-
-Instead of defining your URLs like so:
-
-    $toco->route('^blog/$', 'blog-index');
-    $toco->route('^blog/category/(?P<id>\d+)/$', 'blog-category');
-    $toco->route('^blog/view/(?P<id>\d+)/$', 'blog-view');
-
-You can do this:
-
-    $blogUrls = array(
-        array('^$', 'blog-index');
-        array('^category/(?P<id>\d+)/$', 'blog-category');
-        array('^view/(?P<id>\d+)/$', 'blog-view');
-    );
-    $toco->route('^blog/', $blogUrls);
 
 Note: the first URL pattern that matches the request will be used, so pay attention to the order in
 which the routes are set.
@@ -94,18 +72,18 @@ which the routes are set.
 ### View functions ###
 
 Your view functions will handle the business logic. Let's take the previous example: your view function
-will probably use the captured ID from the URL and look for it in a database. You can then return
+will probably use the captured slug from the URL and look for it in a database. You can then return
 a Toco_Response instance.
 
 Note: if your view function returns something else, an exception will be risen.
 
-If you want to return a 404 page (for example, if your article ID does not exist in the database) you
+If you want to return a 404 page (for example, if your article slug does not exist in the database) you
 can throw a Toco_Exception_404 exception, like so:
 
     function blog-view(Toco_Request $request, $matches) {
-        // Captured ID is now $matches['id']
+        // Captured ID is now $matches['slug']
         $blog = new BlogModel();
-        $article = $blog->find($matches['id']);
+        $article = $blog->find($matches['slug']);
         if (!$article) {
             // This will cause a 404 page to be returned
             throw new Toco_Exception_404();
@@ -116,8 +94,8 @@ can throw a Toco_Exception_404 exception, like so:
 Also, you can also use the Toco_Response_Redirect class to redirect the request, like so:
 
     function blog-view(Toco_Request $request, $matches) {
-        // Captured ID is now $matches['id']
-        if (12 == $matches['id']) {
+        // Captured ID is now $matches['slug']
+        if ('hello-world' == $matches['slug']) {
             return new Toco_Response_Redirect('http://www.path.to/redirect.html');
         }
         ...
