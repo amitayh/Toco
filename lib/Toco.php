@@ -108,6 +108,7 @@ class Toco
     public function match($path) {
         foreach ($this->_routes as $route) {
             list($route, $view) = $route;
+            /** @var $route Toco_Route */
             if (($params = $route->match($path)) !== false) {
                 return array($view, $params);
             }
@@ -130,6 +131,8 @@ class Toco
                 // Call the method
                 $result = $middleware->$method($request, $arg1, $arg2);
                 if ($result instanceof Toco_Response) {
+                    /** @var $result Toco_Response */
+                    
                     // If the middleware has returned a Toco_Response object, it will dispatch immediately
                     $result->send();
                     exit();
