@@ -19,4 +19,4 @@ require APPLICATION_PATH . '/urls.php';
 require APPLICATION_PATH . '/views.php';
 
 // Dispatch the request
-$toco->run();
+$toco->run(new Toco_Request());

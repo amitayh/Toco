@@ -68,11 +68,10 @@ class Toco
     /**
      * Dispatch request
      *
-     * @throws Toco_Exception
+     * @param Toco_Request $request
      * @return void
      */
-    public function run() {
-        $request = new Toco_Request();
+    public function run(Toco_Request $request) {
         $this->_runMiddleware('processRequest', $request);
         try {
             $match = $this->match($request->path);
