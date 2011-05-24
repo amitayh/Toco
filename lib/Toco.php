@@ -68,11 +68,10 @@ class Toco
     /**
      * Dispatch request
      *
-     * @throws Toco_Exception
+     * @param Toco_Request $request
      * @return void
      */
-    public function run() {
-        $request = new Toco_Request();
+    public function run(Toco_Request $request) {
         $this->_runMiddleware('processRequest', $request);
         try {
             $match = $this->match($request->path);
@@ -108,6 +107,7 @@ class Toco
     public function match($path) {
         foreach ($this->_routes as $route) {
             list($route, $view) = $route;
+            /** @var $route Toco_Route */
             if (($params = $route->match($path)) !== false) {
                 return array($view, $params);
             }
@@ -130,6 +130,8 @@ class Toco
                 // Call the method
                 $result = $middleware->$method($request, $arg1, $arg2);
                 if ($result instanceof Toco_Response) {
+                    /** @var $result Toco_Response */
+                    
                     // If the middleware has returned a Toco_Response object, it will dispatch immediately
                     $result->send();
                     exit();

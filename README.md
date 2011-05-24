@@ -42,7 +42,7 @@ subclass). Let's see how this works:
     }
 
     // Dispatch the request
-    $toco->run();
+    $toco->run(new Toco_Request());
 
 ### URLs ###
 
