@@ -11,11 +11,6 @@ class Toco_Request
     /**
      * @var array
      */
-    public $SERVER;
-
-    /**
-     * @var array
-     */
     public $GET;
 
     /**
@@ -36,17 +31,7 @@ class Toco_Request
     /**
      * @var array
      */
-    public $SESSION;
-
-    /**
-     * @var array
-     */
     public $REQUEST;
-
-    /**
-     * @var array
-     */
-    public $ENV;
 
     /**
      * @var string
@@ -74,18 +59,15 @@ class Toco_Request
      * @return void
      */
     public function __construct() {
-        $this->SERVER = &$_SERVER;
         $this->GET = &$_GET;
         $this->POST = &$_POST;
         $this->FILES = &$_FILES;
         $this->COOKIE = &$_COOKIE;
-        $this->SESSION = &$_SESSION;
         $this->REQUEST = &$_REQUEST;
-        $this->ENV = &$_ENV;
         
-        $this->method = $this->SERVER['REQUEST_METHOD'];
-        if (isset($this->SERVER['PATH_INFO'])) {
-            $this->path = '/' . trim($this->SERVER['PATH_INFO'], '/');
+        $this->method = $_SERVER['REQUEST_METHOD'];
+        if (isset($_SERVER['PATH_INFO'])) {
+            $this->path = '/' . trim($_SERVER['PATH_INFO'], '/');
         }
         $this->headers = $this->_getHeaders(); 
     }
@@ -159,7 +141,7 @@ class Toco_Request
      */
     protected function _getHeaders() {
          $headers = array();
-        foreach ($this->SERVER as $key => $value) {
+        foreach ($_SERVER as $key => $value) {
             if (substr($key, 0, 5) == 'HTTP_') {
                 $headers[$key] = $value;
             }
