@@ -3,7 +3,7 @@
 /**
  * @package Toco
  */
-abstract class Toco_Controller_Abstract
+abstract class Toco_Controller
 {
 
     /**
@@ -60,7 +60,7 @@ abstract class Toco_Controller_Abstract
      *
      * @param string $key
      * @param mixed $value
-     * @return Toco_Controller_Abstract
+     * @return Toco_Controller
      */
     public function setVar($key, $value) {
         $this->_vars[$key] = $value;

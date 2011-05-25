@@ -24,7 +24,7 @@ subclass). Let's see how this works:
 *config.php*
 
     define('DEBUG', false);
-    define('APPLICATION_PATH', realpath(dirname(__file__) . '/..'));
+    define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/..'));
     define('TEMPLATES_PATH', APPLICATION_PATH . '/templates');
     define('CACHE_PATH', APPLICATION_PATH . '/cache');
 
