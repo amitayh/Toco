@@ -29,7 +29,6 @@ function defaultView(Toco_Request $request, $params) {
     if (!class_exists($controllerClass)) {
         throw new Toco_Exception_404('No route matches requested path: ' . $request->path);
     }
-    $context = array('menu' => $controllerName);
-    $controller = new $controllerClass($request, $params, $context);
+    $controller = new $controllerClass($request, $params);
     return $controller->renderToResponse(strtolower($params['action']));
 }
