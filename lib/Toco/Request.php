@@ -55,8 +55,6 @@ class Toco_Request
 
     /**
      * Constructor
-     * 
-     * @return void
      */
     public function __construct() {
         $this->GET = &$_GET;
@@ -101,7 +99,7 @@ class Toco_Request
 
     /**
      * @param string $name
-     * @return
+     * @return boolean
      */
     public function __isset($name) {
         return isset($this->_data[$name]);
@@ -113,6 +111,10 @@ class Toco_Request
      */
     public function __unset($name) {
         unset($this->_data[$name]);
+    }
+
+    public function hasRequestParam($param) {
+        return isset($this->REQUEST[$param]);
     }
 
     public function getRequestParam($param, $default = null) {

@@ -59,7 +59,12 @@ class Toco_Route
      * @return array|false
      */
     public function match($url) {
-        if (preg_match($this->compile(), $url, $matches)) {
+        // Try to avoid regular expressions use if possible
+        if (strpos($this->pattern, ':') === false) {
+            if ($url == $this->pattern) {
+                return $this->defaults;
+            }
+        } elseif (preg_match($this->compile(), $url, $matches)) {
             return $this->_clean(array_merge($this->defaults, $matches));
         }
         return false;
