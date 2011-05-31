@@ -31,4 +31,11 @@ class Toco_Template_Adapter_Twig implements Toco_Template_Adapter_Interface
         return $template->render($context);
     }
 
+    /**
+     * @return Twig_Environment
+     */
+    public function getTwig() {
+        return $this->_twig;
+    }
+
 }
