@@ -35,13 +35,8 @@ class Toco_Form_BoundField
     }
 
     public function widget($attributes = array()) {
-        $default = array(
-            'name'  => $this->_field->name,
-            'value' => $this->getValue(),
-            'id'    => $this->_field->getId(),
-        );
-        $attributes = array_merge($default, $attributes);
-        return $this->_field->getWidget()->render($attributes);
+        $attributes = array_merge(array('id' => $this->_field->getId()), $attributes);
+        return $this->_field->getWidget()->render($this->_field->name, $this->getValue(), $attributes);
     }
 
     public function getValue() {

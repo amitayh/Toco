@@ -11,11 +11,11 @@ class Toco_Form_Widget_PasswordInput extends Toco_Form_Widget_Input
         $this->_renderValue = $renderValue;
     }
     
-    public function render($attributes = array()) {
+    public function render($name, $value, $attributes = array()) {
         if (!$this->_renderValue) {
-            $attributes['value'] = null;
+            $value = null;
         }
-        return parent::render($attributes);
+        return parent::render($name, $value, $attributes);
     }
     
 }

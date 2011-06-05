@@ -6,18 +6,24 @@
 abstract class Toco_Form_Widget
 {
     
-    public $attributes;
+    public $attributes = array();
 
-    public function __construct($attributes = array()) {
-        $this->attributes = $attributes;
+    public function __construct(array $attributes = null) {
+        if ($attributes) {
+            $this->attributes = array_merge($this->attributes, $attributes);
+        }
     }
 
-    abstract public function render($attributes = array());
+    abstract public function render($name, $value, $attributes = array());
+
+    public static function escape($value) {
+        return htmlentities($value, ENT_QUOTES, 'utf-8');
+    }
     
     public static function renderAttributes($attributes = array()) {
         $output = array();
         foreach ($attributes as $name => $value) {
-            $output[] = $name . '="' . htmlentities($value, ENT_QUOTES, 'utf-8') . '"';
+            $output[] = $name . '="' . self::escape($value) . '"';
         }
         return implode(' ', $output);
     }

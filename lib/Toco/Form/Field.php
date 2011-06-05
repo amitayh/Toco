@@ -14,13 +14,15 @@ abstract class Toco_Form_Field
 
     public $helpText;
 
-    protected $_required;
+    public $required;
 
     protected $_widget;
 
     protected $_errors;
 
     protected $_validators = array();
+
+    protected $_defaultValidators = array();
 
     protected $_id = 'id_%s';
 
@@ -29,9 +31,12 @@ abstract class Toco_Form_Field
         $this->label = ($label) ? $label : ucfirst(str_replace('_', ' ', $name));
         $this->initial = $initial;
         $this->helpText = $helpText;
+        $this->required = $required;
         $this->_widget = ($widget) ? $widget : new Toco_Form_Widget_TextInput();
+        foreach ($this->_defaultValidators as $validator) {
+            $this->addValidator($validator);
+        }
         $this->_errors = new Toco_Form_ErrorsList();
-        $this->_required = $required;
     }
     
     public function setWidget(Toco_Form_Widget $widget) {
@@ -39,14 +44,20 @@ abstract class Toco_Form_Field
         return $this;
     }
     
-    public function addValidator(Toco_Form_Validator $validator) {
+    public function addValidator($validator) {
+        if (is_string($validator)) {
+            $validator = Toco_Form_Validator::factory($validator);
+        }
+        if (!$validator instanceof Toco_Form_Validator) {
+            throw new Exception('Invalid validator');
+        }
         $this->_validators[] = $validator;
         return $this;
     }
 
     public function clean($value) {
         $value = trim($value);
-        if ($this->_required && empty($value) && !is_numeric($value)) {
+        if ($this->required && empty($value) && !is_numeric($value)) {
             $this->_errors[] = 'This field is required';
             throw new Toco_Form_ValidationError();
         } elseif ($value) {
