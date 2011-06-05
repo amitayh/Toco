@@ -5,6 +5,49 @@ function index(Toco_Request $request, $params) {
     return Toco_Response::renderToResponse('index.html', array('menu' => 'home'));
 }
 
+// Forms
+class ContactForm extends Toco_Form
+{
+
+    public function init() {
+        $this->name = 'contact';
+
+
+        $name = new Toco_Form_Field_Char('name');
+
+        $email = new Toco_Form_Field_Email('email', false);
+
+        $subject = new Toco_Form_Field_Char('subject');
+
+        $message = new Toco_Form_Field_Char('message');
+        $message->setWidget(new Toco_Form_Widget_Textarea());
+
+        $this->addFields($name, $email, $subject, $message);
+    }
+
+}
+
+function form(Toco_Request $request, $params) {
+    
+    if ($request->method == 'POST') {
+        $form = new ContactForm($request->POST);
+        if ($form->isValid()) {
+
+            var_dump($form->getCleanedData('subject'));
+            die;
+            
+        }
+    } else {
+        $form = new ContactForm();
+    }
+
+    $context = array(
+        'form' => $form
+    );
+
+    return Toco_Response::renderToResponse('form.html', $context);
+}
+
 // Blog view functions. A simple example - in real world will probably use an ORM
 function blogIndex(Toco_Request $request, $params) {
     return Toco_Response::renderToResponse('blog/index.html', $params);

@@ -3,6 +3,9 @@
 // Homepage route
 $toco->route(new Toco_Route('/'), 'index');
 
+// Forms example
+$toco->route(new Toco_Route('/form'), 'form');
+
 // Blog
 $toco->route(new Toco_Route('/blog/:year/:month/:slug'), 'blogArticle');
 $toco->route(new Toco_Route('/blog/:year/:month'), 'blogArchiveMonth');
