@@ -33,6 +33,17 @@ abstract class Toco_Form implements IteratorAggregate
         return $this;
     }
 
+    public function addFields() {
+        $fields = func_get_args();
+        if (count($fields) == 1 && is_array($fields[0])) {
+            $fields = $fields[0];
+        }
+        foreach ($fields as $field) {
+            $this->addField($field);
+        }
+        return $this;
+    }
+
     public function clean() {
         $this->_isValid = false;
         if ($this->_data) {
