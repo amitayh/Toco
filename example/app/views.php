@@ -14,15 +14,19 @@ class ContactForm extends Toco_Form
 
 
         $name = new Toco_Form_Field_Char('name');
+        
+        $age = new Toco_Form_Field_Integer('age', false, 18, 35);
 
         $email = new Toco_Form_Field_Email('email', false);
+        
+        $url = new Toco_Form_Field_Url('url', false, null, 'http://');
 
         $subject = new Toco_Form_Field_Char('subject');
 
         $message = new Toco_Form_Field_Char('message');
         $message->setWidget(new Toco_Form_Widget_Textarea());
 
-        $this->addFields($name, $email, $subject, $message);
+        $this->addFields($name, $age, $email, $url, $subject, $message);
     }
 
 }

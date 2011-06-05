@@ -6,10 +6,13 @@
 
     <form action="" method="post">
 
-        {{ form }}
+        {{ form|raw }}
 
+        <p class="required">Required fields</p>
         <p><input type="submit" value="Subbmit" /></p>
 
     </form>
+    
+    <p><a href="{{ BASE_URL }}form/">Reload</a></p>
 
 {% endblock %}

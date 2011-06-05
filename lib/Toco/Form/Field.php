@@ -56,25 +56,27 @@ abstract class Toco_Form_Field
     }
 
     public function clean($value) {
-        $value = trim($value);
-        if ($this->required && empty($value) && !is_numeric($value)) {
-            $this->_errors[] = 'This field is required';
-            throw new Toco_Form_ValidationError();
-        } elseif ($value) {
-            try {
-                $value = $this->getValue($value);
-            } catch (Toco_Form_ValidationError $e) {
-                $this->_errors[] = $e->getMessage();
-                throw new Toco_Form_ValidationError();
-            }
-            $this->validate($value);
-        } else {
-            $value = null;
+        $this->validate($value);
+        try {
+            $value = $this->getValue($value);
+        } catch (Toco_Form_ValidationError $e) {
+            $this->_errors[] = $e->getMessage();
+            throw $e;
+        }
+        if (!$this->isEmpty($value)) {
+            $this->runValidators($value);
         }
         return $value;
     }
 
     public function validate($value) {
+        if ($this->required && $this->isEmpty($value)) {
+            $this->_errors[] = 'This field is required';
+            throw new Toco_Form_ValidationError();
+        }
+    }
+    
+    public function runValidators($value) {
         foreach ($this->_validators as $validator) {
             try {
                 $validator->validate($value);
@@ -85,6 +87,10 @@ abstract class Toco_Form_Field
         if (!$this->isValid()) {
             throw new Toco_Form_ValidationError();
         }
+    }
+    
+    public function isEmpty($value) {
+        return (empty($value) && !is_numeric($value));
     }
 
     public function getWidget() {

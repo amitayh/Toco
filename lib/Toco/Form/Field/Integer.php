@@ -15,10 +15,13 @@ class Toco_Form_Field_Integer extends Toco_Form_Field
     }
 
     public function getValue($value) {
-        if (!is_numeric($value) || (float) $value != (int) $value) {
-            throw new Toco_Form_ValidationError('Enter a whole number');
+        if (!$this->isEmpty($value)) {
+            if (!is_numeric($value) || (float) $value != (int) $value) {
+                throw new Toco_Form_ValidationError('Enter a whole number');
+            }
+            return (int) $value;
         }
-        return (int) $value;
+        return null;
     }
     
 }

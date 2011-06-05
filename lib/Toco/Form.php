@@ -70,8 +70,11 @@ abstract class Toco_Form implements IteratorAggregate
         return (isset($this->_data[$name])) ? $this->_data[$name] : null;
     }
 
-    public function getCleanedData($name) {
-        return (isset($this->_cleanedData[$name])) ? $this->_cleanedData[$name] : null;
+    public function getCleanedData($name = null) {
+        if ($name !== null) {
+            return (isset($this->_cleanedData[$name])) ? $this->_cleanedData[$name] : null;
+        }
+        return $this->_cleanedData;
     }
 
     public function __toString() {

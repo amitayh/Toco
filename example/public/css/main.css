@@ -8,10 +8,16 @@ a:link, a:visited, a:active, a:hover {
 
 label {
     display: inline-block;
-    width: 75px;
+    width: 85px;
     vertical-align: top;
 }
 
+.required:before {
+    content: '* ';
+    color: #c00;
+}
+
 .errors {
-    color: #8b0000;
+    color: #c00;
+    margin-left: 85px;
 }

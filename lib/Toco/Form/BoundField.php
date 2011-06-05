@@ -7,6 +7,8 @@ class Toco_Form_BoundField
     
     protected $_field;
     
+    protected $_requiredClass = 'required';
+
     protected $_labelSuffix = ':';
 
     public function __construct(Toco_Form $form, Toco_Form_Field $field) {
@@ -22,6 +24,9 @@ class Toco_Form_BoundField
         $contents = ($contents) ? $contents : $this->_field->label;
         $contents .= $this->_labelSuffix;
         $attributes['for'] = $this->_field->getId();
+        if ($this->_field->required) {
+            $attributes['class'] = $this->_requiredClass;
+        }
         return sprintf('<label %s>%s</label>', Toco_Form_Widget::renderAttributes($attributes), $contents);
     }
 
