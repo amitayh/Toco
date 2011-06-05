@@ -12,7 +12,7 @@ abstract class Toco_Form_Widget
         $this->attributes = $attributes;
     }
 
-    abstract public function render($name, $value, $attributes = array());
+    abstract public function render($attributes = array());
     
     public static function renderAttributes($attributes = array()) {
         $output = array();

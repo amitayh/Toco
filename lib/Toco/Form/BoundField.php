@@ -15,25 +15,33 @@ class Toco_Form_BoundField
     }
     
     public function __toString() {
-        $name = $this->_field->name;
-        $value = $this->getValue();
-        $attributes = array();
-        $id = $this->_field->getId();
-        if ($id) {
-            $attributes['id'] = $id;
-        }
-        return $this->_field->getWidget()->render($name, $value, $attributes);
+        return $this->widget();
     }
     
-    public function labelTag($contents = null) {
+    public function label($contents = null, $attributes = array()) {
         $contents = ($contents) ? $contents : $this->_field->label;
         $contents .= $this->_labelSuffix;
-        $attributes = array('for' => $this->_field->getId());
+        $attributes['for'] = $this->_field->getId();
         return sprintf('<label %s>%s</label>', Toco_Form_Widget::renderAttributes($attributes), $contents);
     }
-    
-    public function errors() {
-        
+
+    public function errors($attributes = array()) {
+        if (!$this->_field->isValid()) {
+            $errors = $this->_field->getErrors();
+            $errors->attributes = array_merge($errors->attributes, $attributes);
+            return $errors;
+        }
+        return null;
+    }
+
+    public function widget($attributes = array()) {
+        $default = array(
+            'name'  => $this->_field->name,
+            'value' => $this->getValue(),
+            'id'    => $this->_field->getId(),
+        );
+        $attributes = array_merge($default, $attributes);
+        return $this->_field->getWidget()->render($attributes);
     }
 
     public function getValue() {
